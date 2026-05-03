@@ -1,3 +1,52 @@
+// ── Firestore 同期 ────────────────────────────────────────
+
+let _suppressSnapshot = false; // 自分の書き込みによる再レンダーを抑制
+
+async function fsWrite(data) {
+  if (typeof FAMILY_DOC === 'undefined') return; // Firebase未初期化時はスキップ
+  try {
+    _suppressSnapshot = true;
+    await FAMILY_DOC.set(data, { merge: true });
+  } catch (e) {
+    console.warn('Firestore write failed:', e);
+  } finally {
+    setTimeout(() => { _suppressSnapshot = false; }, 600);
+  }
+}
+
+function startFirestoreSync() {
+  if (typeof FAMILY_DOC === 'undefined') return;
+
+  FAMILY_DOC.onSnapshot(snapshot => {
+    if (_suppressSnapshot || !snapshot.exists) return;
+
+    const data = snapshot.data();
+
+    // 出産予定日
+    if (data.dueDate !== undefined) {
+      if (data.dueDate) localStorage.setItem('dueDate', data.dueDate);
+      else              localStorage.removeItem('dueDate');
+      renderDueDateInfo();
+      renderRoadmap();
+      if (calDisplayMode === 'calendar') renderCalendarGrid();
+    }
+
+    // カスタムイベント
+    if (data.customEvents !== undefined) {
+      localStorage.setItem('customEvents', JSON.stringify(data.customEvents || []));
+      renderCalendarContent();
+    }
+
+    // チェックリスト
+    if (data.todos !== undefined) {
+      Object.entries(data.todos || {}).forEach(([key, val]) => {
+        localStorage.setItem(key, val ? '1' : '0');
+      });
+      renderRoadmap();
+    }
+  }, err => console.warn('Firestore listen error:', err));
+}
+
 // ── 認証 ─────────────────────────────────────────────────
 
 function checkAuth() {
@@ -98,6 +147,7 @@ function saveDueDate() {
   const val = document.getElementById('due-date-input').value;
   if (val) localStorage.setItem('dueDate', val);
   else localStorage.removeItem('dueDate');
+  fsWrite({ dueDate: val || null });
   renderDueDateInfo();
   renderRoadmap();
   if (calDisplayMode === 'calendar') renderCalendarGrid();
@@ -154,6 +204,7 @@ function getCustomEvents() {
 
 function saveCustomEvents(events) {
   localStorage.setItem('customEvents', JSON.stringify(events));
+  fsWrite({ customEvents: events });
 }
 
 function getEventsForDate(dateStr) {
@@ -313,6 +364,7 @@ function selectPhase(id) {
 
 function toggleTodo(key, checked) {
   localStorage.setItem(key, checked ? '1' : '0');
+  fsWrite({ todos: { [key]: checked } });
   renderRoadmap();
 }
 
@@ -751,6 +803,7 @@ function showTab(name) {
 // ── 初期化 ────────────────────────────────────────────────
 
 function initApp() {
+  startFirestoreSync(); // Firestore同期開始（他の人の変更をリアルタイム反映）
   initDueDatePanel();
   renderRoadmap();
 
