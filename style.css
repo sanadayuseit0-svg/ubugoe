@@ -600,3 +600,144 @@ section.active { display: block; }
 .cf-amount { font-weight: 800; white-space: nowrap; font-size: 13px; }
 .cf-amount.in  { color: #059669; }
 .cf-amount.out { color: #e11d48; }
+
+/* ══════════════════════════════════════════
+   スマホ対応（640px以下）
+══════════════════════════════════════════ */
+@media (max-width: 640px) {
+
+  /* ヘッダー：タブバーを非表示にして下に移動 */
+  header {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+  .header-title { font-size: 16px; }
+  .header-sub   { display: none; }
+  .logout-btn   { font-size: 16px; margin-left: 4px; }
+
+  /* タブバーを画面下部に固定 */
+  .tab-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    margin: 0;
+    border-radius: 0;
+    padding: 10px 12px env(safe-area-inset-bottom, 12px);
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+    border-radius: 20px 20px 0 0;
+    justify-content: stretch;
+    gap: 6px;
+    z-index: 200;
+    box-shadow: 0 -4px 20px rgba(180,80,140,0.10);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 10px 6px;
+    font-size: 11px;
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  /* メインのpadding：ボトムナビ分を確保 */
+  main {
+    padding: 16px 14px 110px;
+  }
+
+  /* 予定日パネル */
+  .due-date-panel { padding: 14px; }
+  .due-date-input-row { gap: 8px; }
+  .due-info-grid { gap: 12px; }
+  .due-info-value { font-size: 14px; }
+
+  /* 矢羽チップ：小さくする */
+  .phase-chip {
+    min-width: 100px;
+    padding: 10px 22px 10px 36px;
+  }
+  .phase-chip:first-child { padding-left: 18px; }
+  .chip-icon   { font-size: 16px; }
+  .chip-name   { font-size: 11px; }
+  .chip-period { font-size: 9px; }
+  .chip-date   { font-size: 8px; }
+
+  /* フェーズカードヘッダー：金額バッジを下に */
+  .phase-card-header {
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .phase-card-icon { width: 44px; height: 44px; font-size: 22px; }
+  .phase-card-title { font-size: 17px; }
+  .cash-badge {
+    width: 100%;
+    margin-left: 0;
+    text-align: left;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .cash-badge-amount { font-size: 18px; }
+
+  /* フェーズカード内 */
+  .card-section { padding: 14px 16px; }
+  .todo-title   { font-size: 13px; }
+
+  /* 給付金アイテム */
+  .benefit-item { padding: 10px; gap: 8px; }
+  .benefit-name { font-size: 12px; }
+  .benefit-amount { font-size: 13px; }
+
+  /* 週カードヘッダー：日付バッジを折り返し */
+  .week-card-header {
+    flex-wrap: wrap;
+    padding: 12px 14px;
+    gap: 6px;
+  }
+  .week-baby-size { flex: 1; min-width: 0; }
+  .week-size-name { font-size: 12px; }
+  .week-size-text { font-size: 11px; }
+  .week-emoji     { font-size: 18px; }
+  .week-actual-date {
+    margin-left: 0;
+    margin-right: 0;
+    order: 4;
+    width: 100%;
+    text-align: left;
+  }
+  .week-expand-icon { margin-left: auto; order: 3; }
+
+  /* 週カード本体 */
+  .week-card-body { padding: 12px 14px; gap: 10px; }
+  .week-detail-text { font-size: 12px; }
+
+  /* シミュレーター */
+  .sim-header   { padding: 16px; }
+  .sim-header h2 { font-size: 16px; }
+  .sim-inputs   { padding: 16px; gap: 16px; }
+  .sim-results  { padding: 16px; gap: 12px; }
+  .result-total-amount { font-size: 26px; }
+
+  /* 収支タイムライン：2カラムに */
+  .cf-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "timing amount"
+      "label  amount";
+  }
+  .cf-timing { grid-area: timing; }
+  .cf-label  { grid-area: label; font-size: 11px; }
+  .cf-amount { grid-area: amount; align-self: center; font-size: 12px; }
+
+  .cf-summary-amount { font-size: 20px; }
+  .cf-summary-label  { font-size: 10px; }
+
+  /* 認証カード */
+  .auth-card {
+    padding: 36px 22px;
+    margin: 16px;
+    border-radius: 20px;
+  }
+  .auth-logo  { font-size: 44px; }
+  .auth-title { font-size: 24px; }
+}
