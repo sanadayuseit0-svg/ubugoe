@@ -66,6 +66,13 @@
 
     <!-- ── Calendar ── -->
     <section id="section-calendar">
+      <div class="cal-toolbar">
+        <div class="view-toggle">
+          <button id="btn-cal-view"  class="view-btn active" onclick="setCalView('calendar')">📅 カレンダー</button>
+          <button id="btn-list-view" class="view-btn"        onclick="setCalView('list')">📋 リスト</button>
+        </div>
+        <button class="ics-btn" onclick="generateICS()">Googleカレンダーに追加 ↗</button>
+      </div>
       <div id="calendar-content"></div>
     </section>
 
