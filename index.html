@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>うぶごえ — 妊娠・出産ロードマップ（葛飾区版）</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── ログイン画面 ── -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">👶</div>
+    <div class="auth-title">うぶごえ</div>
+    <div class="auth-sub">妊娠・出産ロードマップ</div>
+    <div class="auth-form">
+      <input
+        class="auth-input"
+        type="password"
+        id="auth-input"
+        placeholder="パスワードを入力"
+        onkeydown="if(event.key==='Enter') submitAuth()"
+      >
+      <div class="auth-error" id="auth-error"></div>
+      <button class="auth-btn" onclick="submitAuth()">ログイン</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── アプリ本体 ── -->
+<div id="app" style="display:none">
+
+  <header>
+    <span class="logo">👶</span>
+    <div>
+      <div class="header-title">うぶごえ</div>
+      <div class="header-sub">妊娠・出産ロードマップ｜葛飾区版</div>
+    </div>
+    <nav class="tab-bar">
+      <button class="tab-btn active" id="tab-roadmap"  onclick="showTab('roadmap')">ロードマップ</button>
+      <button class="tab-btn"        id="tab-calendar" onclick="showTab('calendar')">妊娠カレンダー</button>
+      <button class="tab-btn"        id="tab-sim"      onclick="showTab('sim')">シミュレーター</button>
+    </nav>
+    <button class="logout-btn" onclick="logout()" title="ログアウト">🔓</button>
+  </header>
+
+  <main>
+
+    <!-- 予定日設定パネル -->
+    <div class="due-date-panel">
+      <div class="due-date-input-row">
+        <label class="due-label" for="due-date-input">📅 出産予定日</label>
+        <input class="due-date-input" type="date" id="due-date-input">
+      </div>
+      <div id="due-date-info"></div>
+    </div>
+
+    <!-- ── Roadmap ── -->
+    <section id="section-roadmap" class="active">
+      <div class="timeline-wrapper">
+        <div class="timeline" id="timeline"></div>
+      </div>
+      <div id="phase-detail"></div>
+    </section>
+
+    <!-- ── Calendar ── -->
+    <section id="section-calendar">
+      <div id="calendar-content"></div>
+    </section>
+
+    <!-- ── Simulator ── -->
+    <section id="section-sim">
+
+      <div class="sim-card">
+        <div class="sim-header">
+          <h2>💴 受取金額シミュレーター</h2>
+          <p>雇用形態・月収・育休期間を入力すると、受け取れる給付金の目安がわかります（葛飾区の場合）</p>
+        </div>
+        <div class="sim-body">
+          <div class="sim-inputs">
+            <div class="form-group">
+              <label class="form-label" for="sim-emp">雇用形態</label>
+              <select class="form-select" id="sim-emp">
+                <option value="employee">会社員・公務員</option>
+                <option value="parttime">パート・アルバイト（雇用保険あり）</option>
+                <option value="freelance">フリーランス・自営業</option>
+                <option value="housewife">専業主婦・夫の扶養内</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sim-salary">月収（額面）</label>
+              <div class="input-with-unit">
+                <input class="form-input" type="number" id="sim-salary" value="30" min="0" max="200" style="padding-right:36px">
+                <span class="input-unit">万円</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sim-leave">育休取得予定期間</label>
+              <div class="input-with-unit">
+                <input class="form-input" type="number" id="sim-leave" value="12" min="0" max="24" style="padding-right:36px">
+                <span class="input-unit">ヶ月</span>
+              </div>
+              <span class="form-hint">育児休業給付金の計算に使用</span>
+            </div>
+          </div>
+          <div class="sim-results">
+            <div class="result-total">
+              <div class="result-total-label">受け取れる給付金の目安（概算）</div>
+              <div class="result-total-amount" id="sim-total-amount">---</div>
+              <div class="result-total-note">現金給付＋商品クーポン含む。実費（分娩費など）は含まず</div>
+            </div>
+            <div class="result-breakdown" id="sim-breakdown"></div>
+            <div class="result-disclaimer">
+              ⚠️ このシミュレーターは概算です。実際の金額は保険加入状況・所得・申請時期等により異なります。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sim-card" style="margin-top:24px">
+        <div class="sim-header">
+          <h2>🏦 手元資金シミュレーター</h2>
+          <p>分娩費など先払いの出費と、給付金が入るタイミングを照らし合わせて、事前に準備すべき資金を計算します</p>
+        </div>
+        <div class="sim-body">
+          <div class="sim-inputs">
+            <div class="form-group">
+              <label class="form-label" for="cf-delivery">分娩費の目安（産院に確認）</label>
+              <div class="input-with-unit">
+                <input class="form-input" type="number" id="cf-delivery" value="55" min="30" max="150" style="padding-right:36px">
+                <span class="input-unit">万円</span>
+              </div>
+              <span class="form-hint">東京都内の正常分娩の目安は50〜70万円程度</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cf-method">出産育児一時金の受取方式</label>
+              <select class="form-select" id="cf-method">
+                <option value="direct">直接支払制度（差額のみ支払い）</option>
+                <option value="later">後日申請（全額先払い→後で50万返還）</option>
+              </select>
+              <span class="form-hint">ほとんどの産院は直接支払制度に対応</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cf-mat">マタニティ用品の目安</label>
+              <div class="input-with-unit">
+                <input class="form-input" type="number" id="cf-mat" value="5" min="0" max="50" style="padding-right:36px">
+                <span class="input-unit">万円</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cf-baby">ベビー用品の目安</label>
+              <div class="input-with-unit">
+                <input class="form-input" type="number" id="cf-baby" value="15" min="0" max="100" style="padding-right:36px">
+                <span class="input-unit">万円</span>
+              </div>
+              <span class="form-hint">ベビーベッド・チャイルドシート・おむつ等</span>
+            </div>
+          </div>
+          <div class="sim-results">
+            <div class="cf-summary-grid">
+              <div class="cf-summary-card peak">
+                <div class="cf-summary-label">出産前後に必要な手元資金</div>
+                <div class="cf-summary-amount" id="cf-peak-amount">---</div>
+                <div class="cf-summary-note">給付が入る前のピーク時の必要額</div>
+              </div>
+              <div class="cf-summary-card net">
+                <div class="cf-summary-label">最終的な収支（概算）</div>
+                <div class="cf-summary-amount" id="cf-net-amount">---</div>
+                <div class="cf-summary-note">給付合計 − 出費合計（育休給付・児童手当含む）</div>
+              </div>
+            </div>
+            <div class="cf-timeline-header">収支タイムライン</div>
+            <div class="cf-timeline" id="cf-timeline"></div>
+            <div class="result-disclaimer">
+              ⚠️ 分娩費は産院・分娩方式により大きく異なります。実費は各産院にご確認ください。
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
