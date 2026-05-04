@@ -789,83 +789,7 @@ function calcCashflow() {
     </div>`).join('');
 }
 
-// ── 情報タブ（ニュース・YouTube） ────────────────────────
 
-let newsCache = {};
-
-function renderNewsContent() {
-  const el = document.getElementById('news-content');
-  if (!el) return;
-  fetchNews(el);
-}
-
-async function fetchXML(url) {
-  for (const makeProxy of CORS_PROXIES) {
-    try {
-      const res = await fetch(makeProxy(url), { signal: AbortSignal.timeout(6000) });
-      if (!res.ok) continue;
-      const text = await res.text();
-      const xml = new DOMParser().parseFromString(text, 'text/xml');
-      if (!xml.querySelector('parseerror')) return xml;
-    } catch { continue; }
-  }
-  throw new Error('fetch failed');
-}
-
-function parseDate(str) {
-  if (!str) return '';
-  try { return new Date(str).toLocaleDateString('ja-JP'); } catch { return ''; }
-}
-
-async function fetchOneSrc(src) {
-  const cacheKey = 'news_' + src.url;
-  if (newsCache[cacheKey] && Date.now() - newsCache[cacheKey].ts < 300000) {
-    return { label: src.label, items: newsCache[cacheKey].items };
-  }
-  const xml = await fetchXML(src.url);
-  const items = [...xml.querySelectorAll('item')].slice(0, 8).map(item => {
-    const linkEl  = item.querySelector('link');
-    const link    = linkEl?.getAttribute('href') || linkEl?.textContent?.trim() || '';
-    const rawTitle = item.querySelector('title')?.textContent?.trim() || '';
-    const title   = rawTitle.replace(/ - [^-]{1,40}$/, '');
-    const source  = item.querySelector('source')?.textContent?.trim() || '';
-    const pubDate = parseDate(item.querySelector('pubDate')?.textContent);
-    return { title, link, pubDate, source };
-  }).filter(i => i.title && i.link);
-  newsCache[cacheKey] = { items, ts: Date.now() };
-  return { label: src.label, items };
-}
-
-async function fetchNews(el) {
-  el.innerHTML = '<div class="news-loading">読み込み中…</div>';
-
-  const settled = await Promise.allSettled(NEWS_SOURCES.map(fetchOneSrc));
-  const results = settled.map((r, i) =>
-    r.status === 'fulfilled' ? r.value : { label: NEWS_SOURCES[i].label, items: [] }
-  );
-
-  if (results.every(r => r.items.length === 0)) {
-    el.innerHTML = '<div class="news-empty">ニュースを取得できませんでした。ネットワーク環境をご確認ください。</div>';
-    return;
-  }
-
-  el.innerHTML = results.map(r => `
-    <div class="news-section">
-      <div class="news-section-label">${r.label}</div>
-      <div class="news-cards">
-        ${r.items.length === 0
-          ? '<div class="news-empty">記事を取得できませんでした</div>'
-          : r.items.map(item => `
-            <a class="news-card" href="${item.link}" target="_blank" rel="noopener noreferrer">
-              <div class="news-card-title">${item.title}</div>
-              <div class="news-card-meta">
-                ${item.source ? `<span>${item.source}</span>` : ''}
-                ${item.pubDate ? `<span>${item.pubDate}</span>` : ''}
-              </div>
-            </a>`).join('')}
-      </div>
-    </div>`).join('');
-}
 
 // ── タブ切り替え ──────────────────────────────────────────
 
@@ -876,7 +800,6 @@ function showTab(name) {
   document.getElementById(`tab-${name}`).classList.add('active');
   if (name === 'sim')      calcSimulator();
   if (name === 'calendar') renderCalendarContent();
-  if (name === 'news')     renderNewsContent();
 }
 
 // ── 初期化 ────────────────────────────────────────────────
