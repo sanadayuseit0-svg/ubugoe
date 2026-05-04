@@ -47,11 +47,14 @@
 
   <main>
 
-    <!-- 予定日設定パネル -->
+    <!-- 予定日・区設定パネル -->
     <div class="due-date-panel">
       <div class="due-date-input-row">
         <label class="due-label" for="due-date-input">📅 出産予定日</label>
         <input class="due-date-input" type="date" id="due-date-input">
+        <label class="due-label" for="ward-select" style="margin-left:8px">📍 お住まいの区</label>
+        <select class="ward-select" id="ward-select"></select>
+        <span class="ward-badge" id="ward-badge" style="display:none"></span>
       </div>
       <div id="due-date-info"></div>
     </div>

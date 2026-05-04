@@ -608,6 +608,24 @@ section.active { display: block; }
 }
 .due-date-input:focus { border-color: #c084fc; }
 
+.ward-select {
+  padding: 8px 12px; border: 1.5px solid #f0d9eb; border-radius: 10px;
+  font-size: 13px; font-family: inherit; background: #fdf6ff; color: var(--text);
+  outline: none; transition: border-color 0.15s; max-width: 140px;
+}
+.ward-select:focus { border-color: #c084fc; }
+
+.ward-badge {
+  font-size: 12px; font-weight: 700; padding: 4px 10px;
+  border-radius: 20px; background: linear-gradient(135deg,#fce7f3,#ede9fe);
+  color: var(--accent); white-space: nowrap;
+}
+
+.ward-note {
+  font-size: 12px; color: var(--muted); padding: 10px 24px;
+  background: #fdf6ff; border-bottom: 1px solid var(--border);
+}
+
 .due-info-grid {
   display: flex; gap: 20px; flex-wrap: wrap;
 }
@@ -815,9 +833,10 @@ section.active { display: block; }
     padding: 16px 14px 110px;
   }
 
-  /* 予定日パネル */
+  /* 予定日・区パネル */
   .due-date-panel { padding: 14px; }
-  .due-date-input-row { gap: 8px; }
+  .due-date-input-row { gap: 8px; flex-wrap: wrap; }
+  .ward-select { max-width: 100%; flex: 1; }
   .due-info-grid { gap: 12px; }
   .due-info-value { font-size: 14px; }
 

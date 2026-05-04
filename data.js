@@ -2,8 +2,34 @@
 // ここを変更するとパスワードが変わります
 const APP_PASSWORD = 'ubugoe2026';
 
-// ── ロードマップ（制度・申請） ──────────────────────────────
+// ── 23区リスト ──────────────────────────────────────────────
+const WARDS = [
+  { id: 'chiyoda',    name: '千代田区' },
+  { id: 'chuo',       name: '中央区' },
+  { id: 'minato',     name: '港区' },
+  { id: 'shinjuku',   name: '新宿区' },
+  { id: 'bunkyo',     name: '文京区' },
+  { id: 'taito',      name: '台東区' },
+  { id: 'sumida',     name: '墨田区' },
+  { id: 'koto',       name: '江東区' },
+  { id: 'shinagawa',  name: '品川区' },
+  { id: 'meguro',     name: '目黒区' },
+  { id: 'ota',        name: '大田区' },
+  { id: 'setagaya',   name: '世田谷区' },
+  { id: 'shibuya',    name: '渋谷区' },
+  { id: 'nakano',     name: '中野区' },
+  { id: 'suginami',   name: '杉並区' },
+  { id: 'toshima',    name: '豊島区' },
+  { id: 'kita',       name: '北区' },
+  { id: 'arakawa',    name: '荒川区' },
+  { id: 'itabashi',   name: '板橋区' },
+  { id: 'nerima',     name: '練馬区' },
+  { id: 'adachi',     name: '足立区' },
+  { id: 'katsushika', name: '葛飾区' },
+  { id: 'edogawa',    name: '江戸川区' },
+];
 
+// ── ロードマップ（国・東京都共通の手続き・給付金）─────────────
 const PHASES = [
   {
     id: 'early',
@@ -15,28 +41,10 @@ const PHASES = [
     lightColor: '#f0fdf4',
     todos: [
       {
-        title: '妊娠届を提出・母子手帳を受け取る',
-        where: '区役所・区民事務所',
-        deadline: 'なるべく早めに',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1014924.html',
-      },
-      {
-        title: 'ゆりかご面接を予約・受ける',
-        where: '各健康センター',
-        deadline: 'なるべく早めに',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1014924.html',
-      },
-      {
-        title: 'マタニティパスを申請（交通費6,000円分）',
-        where: '母子手帳交付時に同時申請',
-        deadline: '母子手帳受け取り時',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1015907.html',
-      },
-      {
         title: '妊婦健康診査受診票を受け取る（14回分）',
         where: '母子手帳交付時',
         deadline: '母子手帳受け取り時',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1002072.html',
+        url: 'https://www.mhlw.go.jp/stf/newpage_26234.html',
       },
     ],
     benefits: [
@@ -44,32 +52,25 @@ const PHASES = [
         name: '妊婦支援給付金',
         amount: 50000,
         tag: '現金',
-        note: 'ゆりかご面接後に振込（葛飾区）',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1014924.html',
-      },
-      {
-        name: '妊娠子育て応援券',
-        amount: 10000,
-        tag: 'クーポン',
-        note: 'ゆりかご面接後に配布（葛飾区）',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1030902.html',
+        note: '妊娠届出後の面接後に受給（国の制度・全区共通）',
+        url: 'https://www.mhlw.go.jp/stf/newpage_29529.html',
       },
       {
         name: 'マタニティパス',
         amount: 6000,
         tag: 'ICカード',
-        note: '交通系ICカードへのチャージ（葛飾区）',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1015907.html',
+        note: '東京都・交通系ICカードへのチャージ（23区共通）',
+        url: 'https://www.metro.tokyo.lg.jp/',
       },
       {
         name: '妊婦健診費用補助',
         amount: null,
         tag: '補助',
-        note: '14回分の受診票。費用の一部を区が負担',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1002072.html',
+        note: '14回分の受診票。費用の一部を区が負担（全区共通）',
+        url: 'https://www.mhlw.go.jp/stf/newpage_26234.html',
       },
     ],
-    cashTotal: 66000,
+    cashTotal: 56000,
   },
   {
     id: 'mid',
@@ -84,7 +85,7 @@ const PHASES = [
         title: '出産育児一時金の申請方式を産院に確認',
         where: '出産予定の医療機関',
         deadline: '早めに確認',
-        url: 'https://www.city.katsushika.lg.jp/kurashi/1000049/1001690/1001740.html',
+        url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kodomo/kodomo_kosodate/boshi-hoken/sanka-ichiji.html',
       },
       {
         title: '職場へ産休・育休の意向を伝える',
@@ -96,7 +97,7 @@ const PHASES = [
         title: '妊婦健診を継続受診',
         where: '産院',
         deadline: '定期的に',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1002072.html',
+        url: null,
       },
     ],
     benefits: [
@@ -104,8 +105,8 @@ const PHASES = [
         name: '妊婦健診費用補助（継続）',
         amount: null,
         tag: '補助',
-        note: '引き続き受診票を使用（葛飾区）',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1002072.html',
+        note: '引き続き受診票を使用（全区共通）',
+        url: 'https://www.mhlw.go.jp/stf/newpage_26234.html',
       },
     ],
     cashTotal: 0,
@@ -132,12 +133,6 @@ const PHASES = [
         url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000130583.html',
       },
       {
-        title: '出産育児一時金 受取代理制度を申請（希望時）',
-        where: '区役所 国民健康保険・年金課',
-        deadline: '出産予定日の2ヶ月前〜',
-        url: 'https://www.city.katsushika.lg.jp/kurashi/1000049/1001690/1001740.html',
-      },
-      {
         title: '出産手当金の申請準備（会社員）',
         where: '勤務先の健康保険組合',
         deadline: '産後に申請',
@@ -157,20 +152,14 @@ const PHASES = [
     lightColor: '#fffbeb',
     todos: [
       {
-        title: '出生届を提出',
-        where: '区役所・区民事務所',
-        deadline: '出生から14日以内（必須）',
-        url: 'https://www.city.katsushika.lg.jp/kurashi/1000049/1001693/',
-      },
-      {
         title: '出産育児一時金を申請（直接支払制度以外の場合）',
-        where: '区役所 国民健康保険・年金課',
+        where: '健康保険窓口 or 区役所（国保）',
         deadline: '出産から2年以内',
-        url: 'https://www.city.katsushika.lg.jp/kurashi/1000049/1001690/1001740.html',
+        url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kodomo/kodomo_kosodate/boshi-hoken/sanka-ichiji.html',
       },
       {
         title: '高額療養費を申請（帝王切開等）',
-        where: '区役所 国民健康保険・年金課',
+        where: '健康保険窓口 or 区役所（国保）',
         deadline: '診療翌月〜2年以内',
         url: 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/juuyou/kougakuiryou/index.html',
       },
@@ -203,73 +192,29 @@ const PHASES = [
     lightColor: '#f0fdf4',
     todos: [
       {
-        title: 'こんにちは赤ちゃん訪問を受ける',
-        where: '自宅（訪問）',
-        deadline: '生後4ヶ月まで',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/',
-      },
-      {
-        title: '児童手当を申請',
-        where: '区役所 子育て応援課 / マイナポータル',
-        deadline: '出生月末まで（月末以降は15日以内）',
-        url: 'https://www.city.katsushika.lg.jp/kosodate/1000056/1002336/1002411.html',
-      },
-      {
-        title: 'かつしか出産応援給付金を申請',
-        where: '子育て応援課（児童手当と同時申請可）',
-        deadline: '出生から1年以内',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1031538.html',
-      },
-      {
-        title: '子育て応援ギフトを申請',
-        where: 'こんにちは赤ちゃん訪問後にオンライン申請',
-        deadline: '生後4ヶ月まで',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1030902.html',
-      },
-      {
         title: '赤ちゃんファースト（東京都）を申請',
         where: '専用ウェブサイト',
         deadline: '都の案内に従う',
         url: 'https://www.fukushi.metro.tokyo.lg.jp/kodomo/shussan/tokyo_shussankosodateouen',
       },
-      {
-        title: '産後ケアサービスを予約（希望時）',
-        where: '青戸保健センター 03-3602-1284',
-        deadline: '産後1年以内',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1030308/1020863.html',
-      },
     ],
     benefits: [
-      {
-        name: 'かつしか出産応援給付金',
-        amount: 50000,
-        tag: '現金',
-        note: '葛飾区独自。児童1人あたり',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1031538.html',
-      },
       {
         name: '子育て応援ギフト',
         amount: 100000,
         tag: 'クーポン',
-        note: '国の交付金事業。商品カタログから選択',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1030902.html',
+        note: '国の交付金事業。商品カタログから選択（全区共通）',
+        url: 'https://www.cfa.go.jp/policies/shussan-kosodate/',
       },
       {
         name: '赤ちゃんファースト（東京都）',
         amount: 100000,
         tag: 'ポイント',
-        note: '東京都独自。商品カタログから選択',
+        note: '東京都独自。商品カタログから選択（23区共通）',
         url: 'https://www.fukushi.metro.tokyo.lg.jp/kodomo/shussan/tokyo_shussankosodateouen',
       },
-      {
-        name: '産後ケアサービス',
-        amount: null,
-        tag: 'サービス',
-        note: '基本無料。宿泊最大7日、通所・訪問最大7回',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1030308/1020863.html',
-      },
     ],
-    cashTotal: 250000,
+    cashTotal: 200000,
   },
   {
     id: 'childcare',
@@ -293,12 +238,6 @@ const PHASES = [
         url: 'https://www.mhlw.go.jp/bunya/iryouhoken/iryouhoken13/index.html',
       },
       {
-        title: '保育園申込（希望時）',
-        where: '区役所 保育課 03-5654-8278',
-        deadline: '年度により異なる（要確認）',
-        url: 'https://www.city.katsushika.lg.jp/kosodate/1000056/1002333/1036720.html',
-      },
-      {
         title: '医療費控除の確定申告',
         where: '税務署 / e-Tax',
         deadline: '翌年2〜3月',
@@ -310,8 +249,8 @@ const PHASES = [
         name: '児童手当',
         amount: null,
         tag: '毎月',
-        note: '3歳未満：月1.5万円 / 3歳以上：月1万円〜',
-        url: 'https://www.city.katsushika.lg.jp/kosodate/1000056/1002336/1002411.html',
+        note: '3歳未満：月1.5万円 / 3歳以上：月1万円〜（国の制度）',
+        url: 'https://www.cfa.go.jp/policies/jidoteate/',
       },
       {
         name: '育児休業給付金',
@@ -332,6 +271,217 @@ const PHASES = [
   },
 ];
 
+
+// ── 区ごとの固有データ ──────────────────────────────────────
+// todos[phaseId]: 区役所手続きなど区固有のやること（PHASES共通todoの前に表示）
+// benefits[phaseId]: 区独自の給付金（PHASES共通給付金に追加表示）
+// simBenefits: シミュレーターに加算する区独自給付金
+const WARD_DATA = {
+  katsushika: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所・区民事務所', deadline: 'なるべく早めに', url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1014924.html' },
+        { title: 'ゆりかご面接を予約・受ける', where: '各健康センター', deadline: 'なるべく早めに', url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1014924.html' },
+        { title: 'マタニティパスを申請（交通費6,000円分）', where: '母子手帳交付時に同時申請', deadline: '母子手帳受け取り時', url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1015907.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所・区民事務所', deadline: '出生から14日以内（必須）', url: 'https://www.city.katsushika.lg.jp/kurashi/1000049/1001693/' },
+      ],
+      postnatal: [
+        { title: 'こんにちは赤ちゃん訪問を受ける', where: '自宅（訪問）', deadline: '生後4ヶ月まで', url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/' },
+        { title: '児童手当を申請', where: '区役所 子育て応援課 / マイナポータル', deadline: '出生月末まで', url: 'https://www.city.katsushika.lg.jp/kosodate/1000056/1002336/1002411.html' },
+        { title: 'かつしか出産応援給付金を申請', where: '子育て応援課（児童手当と同時申請可）', deadline: '出生から1年以内', url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1031538.html' },
+        { title: '子育て応援ギフトを申請', where: 'こんにちは赤ちゃん訪問後にオンライン申請', deadline: '生後4ヶ月まで', url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1030902.html' },
+        { title: '産後ケアサービスを予約（希望時）', where: '青戸保健センター 03-3602-1284', deadline: '産後1年以内', url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1030308/1020863.html' },
+      ],
+      childcare: [
+        { title: '保育園申込（希望時）', where: '区役所 保育課 03-5654-8278', deadline: '年度により異なる（要確認）', url: 'https://www.city.katsushika.lg.jp/kosodate/1000056/1002333/1036720.html' },
+      ],
+    },
+    benefits: {
+      early: [
+        { name: '妊娠子育て応援券', amount: 10000, tag: 'クーポン', note: 'ゆりかご面接後に配布（葛飾区）', url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1030902.html' },
+      ],
+      postnatal: [
+        { name: 'かつしか出産応援給付金', amount: 50000, tag: '現金', note: '葛飾区独自。児童1人あたり', url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1031538.html' },
+        { name: '産後ケアサービス', amount: null, tag: 'サービス', note: '基本無料。宿泊最大7日、通所・訪問最大7回', url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1030308/1020863.html' },
+      ],
+    },
+    simBenefits: [
+      { name: '妊娠子育て応援券（葛飾区）', amount: 10000 },
+      { name: 'かつしか出産応援給付金', amount: 50000 },
+    ],
+  },
+  minato: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所・保健所', deadline: 'なるべく早めに', url: 'https://www.city.minato.tokyo.jp/chiikihoken/kenko/ninshin/ninshin/ninshin.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.minato.tokyo.jp/chiikihoken/kenko/ninshin/ninshin/ninshin.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.minato.tokyo.jp/seikatsu/todoke/shusshou.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所 子ども課', deadline: '出生月末まで', url: 'https://www.city.minato.tokyo.jp/jidoteate/index.html' },
+        { title: '出産費用助成金を申請（港区独自）', where: '区役所 子ども家庭支援部', deadline: '出産後1年以内', url: 'https://www.city.minato.tokyo.jp/kodomokyufu/kenko/ninshin/shussan/jose.html' },
+        { title: '子育て応援ギフトを申請', where: '訪問後にオンライン申請', deadline: '生後4ヶ月まで', url: 'https://www.city.minato.tokyo.jp/' },
+      ],
+    },
+    benefits: {
+      postnatal: [
+        { name: '出産費用助成金（港区）', amount: 310000, tag: '現金', note: '港区独自。単胎31万円・双胎29万円/人', url: 'https://www.city.minato.tokyo.jp/kodomokyufu/kenko/ninshin/shussan/jose.html' },
+      ],
+    },
+    simBenefits: [
+      { name: '出産費用助成金（港区）', amount: 310000 },
+    ],
+  },
+  setagaya: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所・出張所・保健センター', deadline: 'なるべく早めに', url: 'https://www.city.setagaya.lg.jp/02244/1185.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.setagaya.lg.jp/02244/1185.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.setagaya.lg.jp/mokuji/kurashi/001/002/002/d00178484.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所 子ども・若者部', deadline: '出生月末まで', url: 'https://www.city.setagaya.lg.jp/mokuji/kodomo/001/002/d00006232.html' },
+        { title: '出産費助成を申請（世田谷区独自）', where: '各総合支所くみん窓口', deadline: '出産後1年以内', url: 'https://www.city.setagaya.lg.jp/02413/1206.html' },
+      ],
+    },
+    benefits: {
+      postnatal: [
+        { name: '出産費助成（世田谷区）', amount: 50000, tag: '現金', note: '世田谷区独自。児童1人あたり5万円', url: 'https://www.city.setagaya.lg.jp/02413/1206.html' },
+      ],
+    },
+    simBenefits: [
+      { name: '出産費助成（世田谷区）', amount: 50000 },
+    ],
+  },
+  adachi: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所・保健センター', deadline: 'なるべく早めに', url: 'https://www.city.adachi.tokyo.jp/hoken/k-kyoiku/kosodate/ninshin-shussho.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.adachi.tokyo.jp/hoken/k-kyoiku/kosodate/ninshin-shussho.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.adachi.tokyo.jp/koseki/todoke/shussei.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所 子ども支援課', deadline: '出生月末まで', url: 'https://www.city.adachi.tokyo.jp/jidoteate/index.html' },
+        { title: '出産費助成を申請（足立区独自）', where: '区役所 子ども支援課', deadline: '出産後1年以内', url: 'https://www.city.adachi.tokyo.jp/oyako/k-kyoiku/kosodate/syussanhi-josei.html' },
+      ],
+    },
+    benefits: {
+      postnatal: [
+        { name: '出産費助成（足立区）', amount: 100000, tag: '現金', note: '足立区独自。児童1人あたり10万円', url: 'https://www.city.adachi.tokyo.jp/oyako/k-kyoiku/kosodate/syussanhi-josei.html' },
+      ],
+    },
+    simBenefits: [
+      { name: '出産費助成（足立区）', amount: 100000 },
+    ],
+  },
+  edogawa: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所・健康サポートセンター', deadline: 'なるべく早めに', url: 'https://www.city.edogawa.tokyo.jp/kosodate/ninshin/index.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.edogawa.tokyo.jp/kosodate/ninshin/index.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.edogawa.tokyo.jp/e049/koseki/todoke/shussei.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所 子育て支援課', deadline: '出生月末まで', url: 'https://www.city.edogawa.tokyo.jp/e049/kosodate/jidoteate/index.html' },
+        { title: '乳児養育手当を申請（江戸川区独自）', where: '区役所 子育て支援課', deadline: '出生後すみやかに', url: 'https://www.city.edogawa.tokyo.jp/e049/kosodate/kosodate/teateshien/youiku.html' },
+      ],
+    },
+    benefits: {
+      early: [
+        { name: 'ぴよママギフト（江戸川区）', amount: 10000, tag: 'クーポン', note: '妊娠届出後に配布（江戸川区）', url: 'https://www.city.edogawa.tokyo.jp/kosodate/ninshin/index.html' },
+      ],
+      postnatal: [
+        { name: '乳児養育手当（江戸川区）', amount: 13000, tag: '毎月', note: '江戸川区独自。月13,000円×最大12ヶ月', url: 'https://www.city.edogawa.tokyo.jp/e049/kosodate/kosodate/teateshien/youiku.html' },
+      ],
+    },
+    simBenefits: [
+      { name: 'ぴよママギフト（江戸川区）', amount: 10000 },
+      { name: '乳児養育手当（江戸川区・12ヶ月）', amount: 13000 * 12 },
+    ],
+  },
+  nerima: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所・各総合相談窓口', deadline: 'なるべく早めに', url: 'https://www.city.nerima.tokyo.jp/hokenfukushi/hoken/sukoyaka/boshitecho.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.nerima.tokyo.jp/hokenfukushi/hoken/sukoyaka/boshitecho.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.nerima.tokyo.jp/kurashi/todoke/shussei.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所 子育て支援部', deadline: '出生月末まで', url: 'https://www.city.nerima.tokyo.jp/kosodate/teate/jidoteate/index.html' },
+      ],
+    },
+    benefits: {
+      postnatal: [
+        { name: '産後ケア費用補助（練馬区）', amount: null, tag: 'サービス', note: 'ショートステイ¥7,000〜・デイケア¥1,500/日（練馬区）', url: 'https://www.city.nerima.tokyo.jp/hokenfukushi/hoken/sukoyaka/sango-keajigyou.html' },
+      ],
+    },
+    simBenefits: [],
+  },
+  itabashi: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '健康福祉センター', deadline: 'なるべく早めに', url: 'https://www.city.itabashi.tokyo.jp/kosodate/ninshin/ninshin/1004062.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.itabashi.tokyo.jp/kosodate/ninshin/ninshin/1004062.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.itabashi.tokyo.jp/koseki/todokeide/1000877.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所 子育て支援課', deadline: '出生月末まで', url: 'https://www.city.itabashi.tokyo.jp/kosodate/teate/jidoteate/index.html' },
+      ],
+    },
+    benefits: {
+      postnatal: [
+        { name: '産後ドゥーラ支援（板橋区）', amount: null, tag: 'サービス', note: '¥500/時間〜（初回4時間）・上限30時間（板橋区）', url: 'https://www.city.itabashi.tokyo.jp/kosodate/ninshin/ninshin/1049534.html' },
+      ],
+    },
+    simBenefits: [],
+  },
+  shinjuku: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所・保健センター', deadline: 'なるべく早めに', url: 'https://www.city.shinjuku.lg.jp/fukushi/file02_01_00001.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.shinjuku.lg.jp/fukushi/file02_01_00001.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.shinjuku.lg.jp/seikatsu/shussei.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所 子ども総合センター', deadline: '出生月末まで', url: 'https://www.city.shinjuku.lg.jp/kodomo/jidoteate_01.html' },
+      ],
+    },
+    benefits: {},
+    simBenefits: [],
+  },
+  ota: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所・特別出張所', deadline: 'なるべく早めに', url: 'https://www.city.ota.tokyo.jp/seikatsu/kodomo/shussan/ninsin.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.ota.tokyo.jp/seikatsu/kodomo/shussan/ninsin.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.ota.tokyo.jp/seikatsu/koseki/todokede/shussei.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所 こども家庭部', deadline: '出生月末まで', url: 'https://www.city.ota.tokyo.jp/seikatsu/kodomo/teate/jidoteate.html' },
+      ],
+    },
+    benefits: {},
+    simBenefits: [],
+  },
+};
 
 // ── 妊娠カレンダー ──────────────────────────────────────────
 

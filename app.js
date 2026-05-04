@@ -44,7 +44,62 @@ function startFirestoreSync() {
       });
       renderRoadmap();
     }
+
+    // 区選択
+    if (data.ward !== undefined) {
+      if (data.ward) localStorage.setItem('selectedWard', data.ward);
+      else           localStorage.removeItem('selectedWard');
+      const sel = document.getElementById('ward-select');
+      if (sel) sel.value = data.ward || '';
+      renderRoadmap();
+      renderWardBadge();
+    }
   }, err => console.warn('Firestore listen error:', err));
+}
+
+// ── 区選択 ────────────────────────────────────────────────────
+
+function getWard() {
+  return localStorage.getItem('selectedWard') || '';
+}
+
+function saveWard(wardId) {
+  if (wardId) localStorage.setItem('selectedWard', wardId);
+  else        localStorage.removeItem('selectedWard');
+  fsWrite({ ward: wardId || null });
+  renderWardBadge();
+  renderRoadmap();
+  calcSimulator();
+}
+
+function renderWardBadge() {
+  const el = document.getElementById('ward-badge');
+  if (!el) return;
+  const wardId = getWard();
+  const ward = WARDS.find(w => w.id === wardId);
+  el.textContent = ward ? `📍 ${ward.name}` : '';
+  el.style.display = ward ? 'inline-block' : 'none';
+}
+
+// 区固有 todos + 共通 todos を結合して返す
+function getMergedTodos(phase) {
+  const wardId = getWard();
+  const wardTodos = wardId && WARD_DATA[wardId]?.todos?.[phase.id] || [];
+  return [...wardTodos, ...phase.todos];
+}
+
+// 区固有 benefits + 共通 benefits を結合して返す
+function getMergedBenefits(phase) {
+  const wardId = getWard();
+  const wardBenefits = wardId && WARD_DATA[wardId]?.benefits?.[phase.id] || [];
+  return [...phase.benefits, ...wardBenefits];
+}
+
+// 区固有の cash 合計を返す
+function getWardCashTotal(phaseId) {
+  const wardId = getWard();
+  const benefits = wardId && WARD_DATA[wardId]?.benefits?.[phaseId] || [];
+  return benefits.reduce((s, b) => s + (b.amount || 0), 0);
 }
 
 // ── 認証 ─────────────────────────────────────────────────
@@ -135,6 +190,15 @@ const PHASE_WEEKS = {
   postnatal: { start: 40, end: 56 },
   childcare: { start: 40, end: null },
 };
+
+function initWardSelect() {
+  const sel = document.getElementById('ward-select');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">区を選択してください</option>'
+    + WARDS.map(w => `<option value="${w.id}">${w.name}</option>`).join('');
+  sel.value = getWard();
+  renderWardBadge();
+}
 
 function initDueDatePanel() {
   const dueDate = getDueDate();
@@ -317,16 +381,25 @@ function renderBenefitItem(benefit) {
 }
 
 function renderPhaseCard(phase) {
-  const cashStr = phase.cashTotal > 0
+  const todos    = getMergedTodos(phase);
+  const benefits = getMergedBenefits(phase);
+  const cashTotal = phase.cashTotal + getWardCashTotal(phase.id);
+
+  // 区未選択の場合のガイダンス
+  const wardId = getWard();
+  const wardNote = !wardId
+    ? `<div class="ward-note">📍 区を選択すると区役所手続き・区独自の給付金も表示されます</div>` : '';
+
+  const cashStr = cashTotal > 0
     ? `<div class="cash-badge">
         <div class="cash-badge-label">このフェーズで受取</div>
-        <div class="cash-badge-amount" style="color:${phase.color.replace('b','8')}">${formatYen(phase.cashTotal)}〜</div>
+        <div class="cash-badge-amount" style="color:${phase.color.replace('b','8')}">${formatYen(cashTotal)}〜</div>
        </div>` : '';
-  const todosHtml = phase.todos.length > 0
-    ? `<ul class="todo-list">${phase.todos.map((t,i) => renderTodoItem(t, phase.id, i)).join('')}</ul>`
+  const todosHtml = todos.length > 0
+    ? `<ul class="todo-list">${todos.map((t,i) => renderTodoItem(t, phase.id, i)).join('')}</ul>`
     : `<p class="empty-state">このフェーズの手続きはありません</p>`;
-  const benefitsHtml = phase.benefits.length > 0
-    ? `<div class="benefit-list">${phase.benefits.map(renderBenefitItem).join('')}</div>`
+  const benefitsHtml = benefits.length > 0
+    ? `<div class="benefit-list">${benefits.map(renderBenefitItem).join('')}</div>`
     : `<p class="empty-state">このフェーズでの給付はありません</p>`;
   return `
     <div class="phase-card">
@@ -338,6 +411,7 @@ function renderPhaseCard(phase) {
         </div>
         ${cashStr}
       </div>
+      ${wardNote}
       <div class="phase-card-body">
         <div class="card-section">
           <div class="section-heading">✅ やること</div>
@@ -707,14 +781,15 @@ function calcSimulator() {
   const salaryYen   = salary * 10000;
   const dailySalary = salaryYen / 30;
 
+  const wardId = getWard();
+  const wardSimBenefits = wardId && WARD_DATA[wardId]?.simBenefits || [];
   const fixed = [
     { name: '妊婦支援給付金',            amount: 50000  },
-    { name: '子育て応援券',              amount: 10000  },
     { name: 'マタニティパス',            amount: 6000   },
     { name: '出産育児一時金',            amount: 500000 },
-    { name: 'かつしか出産応援給付金',     amount: 50000  },
     { name: '子育て応援ギフト（商品）',   amount: 100000 },
     { name: '赤ちゃんファースト・東京都', amount: 100000 },
+    ...wardSimBenefits,
   ];
   const variable = [];
   if (empType === 'employee' || empType === 'parttime') {
@@ -805,11 +880,13 @@ function showTab(name) {
 // ── 初期化 ────────────────────────────────────────────────
 
 function initApp() {
-  startFirestoreSync(); // Firestore同期開始（他の人の変更をリアルタイム反映）
+  startFirestoreSync();
   initDueDatePanel();
+  initWardSelect();
   renderRoadmap();
 
   document.getElementById('due-date-input').addEventListener('change', saveDueDate);
+  document.getElementById('ward-select').addEventListener('change', e => saveWard(e.target.value));
 
   ['sim-emp','sim-salary','sim-leave'].forEach(id => {
     document.getElementById(id).addEventListener('change', calcSimulator);
