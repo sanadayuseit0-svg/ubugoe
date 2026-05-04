@@ -481,6 +481,271 @@ const WARD_DATA = {
     benefits: {},
     simBenefits: [],
   },
+  chiyoda: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.chiyoda.lg.jp/koho/kosodate/kosodate/ninshin/boshitecho.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.chiyoda.lg.jp/koho/kosodate/kosodate/ninshin/boshitecho.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.chiyoda.lg.jp/koho/kurashi/koseki/koseki/todokede.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.chiyoda.lg.jp/koho/kosodate/teate/jidoteate/index.html' },
+        { title: '出産費用助成を申請（千代田区独自）', where: '区役所', deadline: '出産後1年以内', url: 'https://www.city.chiyoda.lg.jp/koho/kosodate/teate/shussanhiyojosei.html' },
+      ],
+    },
+    benefits: {
+      postnatal: [
+        { name: '出産費用助成（千代田区）', amount: 310000, tag: '現金', note: '千代田区独自。最大31万円', url: 'https://www.city.chiyoda.lg.jp/koho/kosodate/teate/shussanhiyojosei.html' },
+      ],
+    },
+    simBenefits: [
+      { name: '出産費用助成（千代田区）', amount: 310000 },
+    ],
+  },
+  chuo: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.chuo.lg.jp/a0031/kosodate/shussan/tetyokohu.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.chuo.lg.jp/a0031/kosodate/shussan/tetyokohu.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.chuo.lg.jp/a0012/kurashi/touroku/koseki/syusseitodoke/index.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.chuo.lg.jp/a0020/kosodate/kosodate/teatejosei/202409jidouteate.html' },
+        { title: '新生児誕生祝品を申請（中央区独自）', where: '区役所', deadline: '出生後すみやかに', url: 'https://www.city.chuo.lg.jp/a0020/kosodate/shussan/shussanshien/kaimonokenn.html' },
+      ],
+    },
+    benefits: {
+      postnatal: [
+        { name: '新生児誕生祝品（中央区）', amount: 50000, tag: 'クーポン', note: '中央区独自。区内共通買物・食事券5万円分', url: 'https://www.city.chuo.lg.jp/a0020/kosodate/shussan/shussanshien/kaimonokenn.html' },
+      ],
+    },
+    simBenefits: [
+      { name: '新生児誕生祝品（中央区）', amount: 50000 },
+    ],
+  },
+  bunkyo: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.bunkyo.lg.jp/b027/p001524.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.bunkyo.lg.jp/b027/p001524.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.bunkyo.lg.jp/b013/p000251.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.bunkyo.lg.jp/b022/p001469/index.html' },
+      ],
+    },
+    benefits: {},
+    simBenefits: [],
+  },
+  taito: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.taito.lg.jp/kosodatekyouiku/kosodate/mokutei/kenkou_iryou/ninshin/todokede/boshikenkotecho.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.taito.lg.jp/kosodatekyouiku/kosodate/mokutei/kenkou_iryou/ninshin/todokede/boshikenkotecho.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.taito.lg.jp/benri/qa/todokede/qashuseitodoke.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.taito.lg.jp/kosodatekyouiku/kosodate/mokutei/teate_josei/teate/jidouteate.html' },
+        { title: '出産費用助成を申請（台東区独自）', where: '区役所', deadline: '出産後1年以内', url: 'https://www.city.taito.lg.jp/kosodatekyouiku/kosodate/mokutei/teate_josei/syussanhiyoujyosei.html' },
+      ],
+    },
+    benefits: {
+      postnatal: [
+        { name: '出産費用助成（台東区）', amount: 50000, tag: '現金', note: '台東区独自。5万円', url: 'https://www.city.taito.lg.jp/kosodatekyouiku/kosodate/mokutei/teate_josei/syussanhiyoujyosei.html' },
+      ],
+    },
+    simBenefits: [
+      { name: '出産費用助成（台東区）', amount: 50000 },
+    ],
+  },
+  sumida: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.sumida.lg.jp/kenko_fukushi/kenko/oyako_kenko/ninshin/ninsintodoke.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.sumida.lg.jp/kenko_fukushi/kenko/oyako_kenko/ninshin/ninsintodoke.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.sumida.lg.jp/faq/kurashi/todokede_syoumei/koseki/30.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.sumida.lg.jp/kosodate_kyouiku/kosodate_site/teate_jyosei_shien/teate_zyosei/teate/kodomo-teate.html' },
+      ],
+    },
+    benefits: {
+      early: [
+        { name: 'こども商品券（墨田区）', amount: 10000, tag: 'クーポン', note: '妊娠届出後に配布（墨田区）', url: 'https://www.city.sumida.lg.jp/kenko_fukushi/kenko/oyako_kenko/syussan_junbi_class/skogift.html' },
+      ],
+    },
+    simBenefits: [
+      { name: 'こども商品券（墨田区）', amount: 10000 },
+    ],
+  },
+  koto: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.koto.lg.jp/261201/kodomo/ninshinshussan/ninshin/6875.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.koto.lg.jp/261201/kodomo/ninshinshussan/ninshin/6875.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.koto.lg.jp/060302/kurashi/jumin/koseki/5061.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.koto.lg.jp/281011/kodomo/kosodate/teate/jidouteate.html' },
+      ],
+    },
+    benefits: {},
+    simBenefits: [],
+  },
+  shinagawa: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-service/hpg000000783.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-ninnshinn/kodomo-ninnshinn-service/hpg000000783.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.shinagawa.tokyo.jp/PC/procedure/procedure-koseki/procedure-koseki-todokede/hpg000001411.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.shinagawa.tokyo.jp/PC/kodomo/kodomo-iryohizyosei/hpg000027168.html' },
+      ],
+    },
+    benefits: {},
+    simBenefits: [],
+  },
+  meguro: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.meguro.tokyo.jp/chiikihoken/kosodatekyouiku/ninshin/ninshintodoke_mynumber.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.meguro.tokyo.jp/chiikihoken/kosodatekyouiku/ninshin/ninshintodoke_mynumber.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.meguro.tokyo.jp/koseki/kurashi/kosekitodokede/shussei.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.meguro.tokyo.jp/kosodatekyouiku/kosodate/shien/teate/shoteate/jidouteate/index.html' },
+      ],
+    },
+    benefits: {},
+    simBenefits: [],
+  },
+  shibuya: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.shibuya.tokyo.jp/kodomo/ninshin/ninshin-todoke/ninshin_todoke.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.shibuya.tokyo.jp/kodomo/ninshin/ninshin-todoke/ninshin_todoke.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.shibuya.tokyo.jp/kurashi/koseki/koseki-todokede/shussho_todoke.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.shibuya.tokyo.jp/kodomo/kodomo-teate-josei/kodomo-teate/jido_t.html' },
+        { title: 'ハッピーマザー出産助成金を申請（渋谷区独自）', where: '区役所', deadline: '出産後1年以内', url: 'https://www.city.shibuya.tokyo.jp/kodomo/ninshin/ninshin-teate/happy_josei.html' },
+      ],
+    },
+    benefits: {
+      postnatal: [
+        { name: 'ハッピーマザー出産助成金（渋谷区）', amount: 100000, tag: '現金', note: '渋谷区独自。最大10万円', url: 'https://www.city.shibuya.tokyo.jp/kodomo/ninshin/ninshin-teate/happy_josei.html' },
+      ],
+    },
+    simBenefits: [
+      { name: 'ハッピーマザー出産助成金（渋谷区）', amount: 100000 },
+    ],
+  },
+  nakano: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.tokyo-nakano.lg.jp/kosodate/kosodatesite_ohirune/nenreibetsu/ninshin/tetsuduki/ninshintodoke.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.tokyo-nakano.lg.jp/kosodate/kosodatesite_ohirune/nenreibetsu/ninshin/tetsuduki/ninshintodoke.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.tokyo-nakano.lg.jp/kurashi/koseki/koseki/syussyotodoke.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.tokyo-nakano.lg.jp/kosodate/kosodatesite_ohirune/mokuteki/teate/teate/jidoteate.html' },
+      ],
+    },
+    benefits: {},
+    simBenefits: [],
+  },
+  suginami: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.suginami.tokyo.jp/s054/1109.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.suginami.tokyo.jp/s054/1109.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.suginami.tokyo.jp/s018/1002.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.suginami.tokyo.jp/s053/1142.html' },
+      ],
+    },
+    benefits: {},
+    simBenefits: [],
+  },
+  toshima: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.toshima.lg.jp/219/kosodate/ninshin/shussanmade/001311.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.toshima.lg.jp/219/kosodate/ninshin/shussanmade/001311.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.toshima.lg.jp/094/tetsuzuki/todokede/todokede/000292.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.toshima.lg.jp/261/kosodate/kosodate/teate-jose/017993.html' },
+        { title: '出産費用電子クーポンを申請（豊島区独自）', where: '区役所', deadline: '出産後すみやかに', url: 'https://www.city.toshima.lg.jp/219/kosodate/ninshin/shussanmade/syussankosodateouen.html' },
+      ],
+    },
+    benefits: {
+      postnatal: [
+        { name: '出産費用電子クーポン（豊島区）', amount: 50000, tag: 'クーポン', note: '豊島区独自。子育て用品に使えるクーポン5万円分', url: 'https://www.city.toshima.lg.jp/219/kosodate/ninshin/shussanmade/syussankosodateouen.html' },
+      ],
+    },
+    simBenefits: [
+      { name: '出産費用電子クーポン（豊島区）', amount: 50000 },
+    ],
+  },
+  kita: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.kita.lg.jp/children-edu/pregnancy/1018244/1002779.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.kita.lg.jp/children-edu/pregnancy/1018244/1002779.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.kita.lg.jp/living/registration/1001523/1001558.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.kita.lg.jp/children-edu/childcare/1002909/1002919/index.html' },
+      ],
+    },
+    benefits: {},
+    simBenefits: [],
+  },
+  arakawa: {
+    todos: {
+      early: [
+        { title: '妊娠届を提出・母子手帳を受け取る', where: '区役所', deadline: 'なるべく早めに', url: 'https://www.city.arakawa.tokyo.jp/a033/ninshinshussan/shinsei/kenkotecho.html' },
+        { title: 'マタニティパスを申請', where: '母子手帳交付時に申請', deadline: '母子手帳受け取り時', url: 'https://www.city.arakawa.tokyo.jp/a033/ninshinshussan/shinsei/kenkotecho.html' },
+      ],
+      birth: [
+        { title: '出生届を提出', where: '区役所', deadline: '出生から14日以内（必須）', url: 'https://www.city.arakawa.tokyo.jp/a010/todokede/koseki/syussan.html' },
+      ],
+      postnatal: [
+        { title: '児童手当を申請', where: '区役所', deadline: '出生月末まで', url: 'https://www.city.arakawa.tokyo.jp/a035/kosodate/teate/jidoteate.html' },
+      ],
+    },
+    benefits: {},
+    simBenefits: [],
+  },
 };
 
 // ── 妊娠カレンダー ──────────────────────────────────────────
