@@ -733,23 +733,7 @@ section.active { display: block; }
 .cf-amount.in  { color: #059669; }
 .cf-amount.out { color: #e11d48; }
 
-/* ── 情報タブ（ニュース・YouTube） ── */
-.news-sub-bar {
-  display: flex; gap: 6px; margin-bottom: 20px;
-  background: #f5e8f3; border-radius: 24px; padding: 4px;
-  width: fit-content;
-}
-
-.news-sub-btn {
-  padding: 8px 20px; border-radius: 20px; border: none;
-  font-size: 13px; font-weight: 600; cursor: pointer;
-  color: var(--muted); background: transparent; transition: all 0.18s;
-  white-space: nowrap;
-}
-.news-sub-btn.active {
-  background: white; color: var(--accent);
-  box-shadow: 0 2px 8px rgba(232,121,160,0.2);
-}
+/* ── 情報タブ（ニュース） ── */
 
 .news-loading {
   text-align: center; color: var(--muted); font-size: 13px;
@@ -786,45 +770,6 @@ section.active { display: block; }
   font-size: 11px; color: var(--muted);
 }
 
-/* YouTube */
-.yt-channel-link {
-  font-size: 11px; font-weight: 600; color: #a78bfa;
-  text-decoration: none; padding: 2px 8px;
-  border-radius: 20px; background: #f5f0ff; border: 1px solid #ddd6fe;
-  margin-left: auto; transition: all 0.15s;
-}
-.yt-channel-link:hover { background: #ede9fe; color: #7c3aed; }
-
-.yt-cards {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-}
-
-@media (max-width: 580px) { .yt-cards { grid-template-columns: 1fr; } }
-
-.yt-card {
-  display: flex; flex-direction: column; text-decoration: none; color: var(--text);
-  background: white; border: 1px solid var(--border); border-radius: 14px;
-  overflow: hidden; transition: all 0.15s; box-shadow: var(--shadow);
-}
-.yt-card:hover {
-  border-color: #f9a8d4; box-shadow: var(--shadow-lg);
-  transform: translateY(-1px);
-}
-
-.yt-thumb {
-  width: 100%; aspect-ratio: 16/9; object-fit: cover;
-  background: #f5e8f3;
-}
-
-.yt-thumb-placeholder {
-  width: 100%; aspect-ratio: 16/9;
-  background: #f5e8f3; display: flex; align-items: center; justify-content: center;
-  font-size: 28px; color: var(--muted);
-}
-
-.yt-card-info { padding: 10px 12px; flex: 1; }
-.yt-card-title { font-size: 13px; font-weight: 600; line-height: 1.45; }
-.yt-card-date  { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
 /* ══════════════════════════════════════════
    スマホ対応（640px以下）

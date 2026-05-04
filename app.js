@@ -791,33 +791,22 @@ function calcCashflow() {
 
 // ── 情報タブ（ニュース・YouTube） ────────────────────────
 
-let newsView = 'news';
 let newsCache = {};
-
-function setNewsView(view) {
-  newsView = view;
-  document.getElementById('btn-news-view').classList.toggle('active', view === 'news');
-  document.getElementById('btn-yt-view').classList.toggle('active', view === 'youtube');
-  renderNewsContent();
-}
 
 function renderNewsContent() {
   const el = document.getElementById('news-content');
   if (!el) return;
-  if (newsView === 'news') fetchNews(el);
-  else fetchYouTubeVideos(el);
+  fetchNews(el);
 }
 
-// CORSプロキシを順に試してXMLを返す。全て失敗したら例外を投げる
 async function fetchXML(url) {
   for (const makeProxy of CORS_PROXIES) {
     try {
-      const res = await fetch(makeProxy(url), { signal: AbortSignal.timeout(10000) });
+      const res = await fetch(makeProxy(url), { signal: AbortSignal.timeout(6000) });
       if (!res.ok) continue;
       const text = await res.text();
       const xml = new DOMParser().parseFromString(text, 'text/xml');
-      if (xml.querySelector('parseerror')) continue;
-      return xml;
+      if (!xml.querySelector('parseerror')) return xml;
     } catch { continue; }
   }
   throw new Error('fetch failed');
@@ -828,34 +817,32 @@ function parseDate(str) {
   try { return new Date(str).toLocaleDateString('ja-JP'); } catch { return ''; }
 }
 
+async function fetchOneSrc(src) {
+  const cacheKey = 'news_' + src.url;
+  if (newsCache[cacheKey] && Date.now() - newsCache[cacheKey].ts < 300000) {
+    return { label: src.label, items: newsCache[cacheKey].items };
+  }
+  const xml = await fetchXML(src.url);
+  const items = [...xml.querySelectorAll('item')].slice(0, 8).map(item => {
+    const linkEl  = item.querySelector('link');
+    const link    = linkEl?.getAttribute('href') || linkEl?.textContent?.trim() || '';
+    const rawTitle = item.querySelector('title')?.textContent?.trim() || '';
+    const title   = rawTitle.replace(/ - [^-]{1,40}$/, '');
+    const source  = item.querySelector('source')?.textContent?.trim() || '';
+    const pubDate = parseDate(item.querySelector('pubDate')?.textContent);
+    return { title, link, pubDate, source };
+  }).filter(i => i.title && i.link);
+  newsCache[cacheKey] = { items, ts: Date.now() };
+  return { label: src.label, items };
+}
+
 async function fetchNews(el) {
   el.innerHTML = '<div class="news-loading">読み込み中…</div>';
-  const results = [];
 
-  for (const src of NEWS_SOURCES) {
-    const cacheKey = 'news_' + src.url;
-    if (newsCache[cacheKey] && Date.now() - newsCache[cacheKey].ts < 300000) {
-      results.push({ label: src.label, items: newsCache[cacheKey].items });
-      continue;
-    }
-    try {
-      const xml = await fetchXML(src.url);
-      const items = [...xml.querySelectorAll('item')].slice(0, 8).map(item => {
-        const linkEl  = item.querySelector('link');
-        const link    = linkEl?.getAttribute('href') || linkEl?.textContent?.trim() || '';
-        const rawTitle = item.querySelector('title')?.textContent?.trim() || '';
-        // Google Newsはタイトル末尾に " - メディア名" が付く
-        const title   = rawTitle.replace(/ - [^-]{1,40}$/, '');
-        const source  = item.querySelector('source')?.textContent?.trim() || '';
-        const pubDate = parseDate(item.querySelector('pubDate')?.textContent);
-        return { title, link, pubDate, source };
-      }).filter(i => i.title && i.link);
-      newsCache[cacheKey] = { items, ts: Date.now() };
-      results.push({ label: src.label, items });
-    } catch {
-      results.push({ label: src.label, items: [] });
-    }
-  }
+  const settled = await Promise.allSettled(NEWS_SOURCES.map(fetchOneSrc));
+  const results = settled.map((r, i) =>
+    r.status === 'fulfilled' ? r.value : { label: NEWS_SOURCES[i].label, items: [] }
+  );
 
   if (results.every(r => r.items.length === 0)) {
     el.innerHTML = '<div class="news-empty">ニュースを取得できませんでした。ネットワーク環境をご確認ください。</div>';
@@ -874,61 +861,6 @@ async function fetchNews(el) {
               <div class="news-card-meta">
                 ${item.source ? `<span>${item.source}</span>` : ''}
                 ${item.pubDate ? `<span>${item.pubDate}</span>` : ''}
-              </div>
-            </a>`).join('')}
-      </div>
-    </div>`).join('');
-}
-
-async function fetchYouTubeVideos(el) {
-  el.innerHTML = '<div class="news-loading">読み込み中…</div>';
-  const results = [];
-
-  for (const ch of YT_CHANNELS) {
-    const cacheKey = 'yt_' + ch.id;
-    if (newsCache[cacheKey] && Date.now() - newsCache[cacheKey].ts < 300000) {
-      results.push({ name: ch.name, id: ch.id, videos: newsCache[cacheKey].videos });
-      continue;
-    }
-    try {
-      const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${ch.id}`;
-      const xml = await fetchXML(feedUrl);
-      const videos = [...xml.querySelectorAll('entry')].slice(0, 4).map(entry => {
-        const href    = entry.querySelector('link')?.getAttribute('href') || '';
-        const videoId = href.match(/[?&]v=([^&]+)/)?.[1]
-                     || entry.getElementsByTagName('videoId')[0]?.textContent
-                     || '';
-        return {
-          title:     entry.querySelector('title')?.textContent?.trim() || '',
-          link:      href || `https://www.youtube.com/watch?v=${videoId}`,
-          pubDate:   parseDate(entry.querySelector('published')?.textContent),
-          thumbnail: videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '',
-          videoId,
-        };
-      }).filter(v => v.title && v.videoId);
-      newsCache[cacheKey] = { videos, ts: Date.now() };
-      results.push({ name: ch.name, id: ch.id, videos });
-    } catch {
-      results.push({ name: ch.name, id: ch.id, videos: [] });
-    }
-  }
-
-  el.innerHTML = results.map(ch => `
-    <div class="news-section">
-      <div class="news-section-label">
-        ${ch.name}
-        <a class="yt-channel-link" href="https://www.youtube.com/channel/${ch.id}" target="_blank" rel="noopener">チャンネルを見る ↗</a>
-      </div>
-      <div class="yt-cards">
-        ${ch.videos.length === 0
-          ? '<div class="news-empty">動画を取得できませんでした</div>'
-          : ch.videos.map(v => `
-            <a class="yt-card" href="${v.link}" target="_blank" rel="noopener noreferrer">
-              <img class="yt-thumb" src="${v.thumbnail}" alt="" loading="lazy"
-                   onerror="this.style.display='none'">
-              <div class="yt-card-info">
-                <div class="yt-card-title">${v.title}</div>
-                ${v.pubDate ? `<div class="yt-card-date">${v.pubDate}</div>` : ''}
               </div>
             </a>`).join('')}
       </div>

@@ -538,11 +538,6 @@ const NEWS_SOURCES = [
   { label: '子育て・育児ニュース', url: 'https://news.google.com/rss/search?q=%E5%AD%90%E8%82%B2%E3%81%A6+%E8%B5%A4%E3%81%A1%E3%82%83%E3%82%93+%E8%82%B2%E5%85%90&hl=ja&gl=JP&ceid=JP:ja' },
 ];
 
-const YT_CHANNELS = [
-  { name: '助産師HISAKO', id: 'UCgLt6RS5cHmL6i15sbu2kGw' },
-  { name: '助産師はるか 安産塾', id: 'UCFQ-kjcWEmRTF0rkzevxSDw' },
-  { name: 'ホッとできる！産婦人科', id: 'UCladKIzy02qqzmktiZmWOAA' },
-];
 
 const TRIMESTER_INFO = {
   first:  { label: '妊娠初期',  weeks: '4〜14週',  color: '#bbf7d0', text: '#166534' },
