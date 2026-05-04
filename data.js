@@ -160,7 +160,7 @@ const PHASES = [
         title: '出生届を提出',
         where: '区役所・区民事務所',
         deadline: '出生から14日以内（必須）',
-        url: 'https://www.city.katsushika.lg.jp/kurashi/1000049/1001693/1001811.html',
+        url: 'https://www.city.katsushika.lg.jp/kurashi/1000049/1001693/',
       },
       {
         title: '出産育児一時金を申請（直接支払制度以外の場合）',
@@ -206,7 +206,7 @@ const PHASES = [
         title: 'こんにちは赤ちゃん訪問を受ける',
         where: '自宅（訪問）',
         deadline: '生後4ヶ月まで',
-        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/1024614.html',
+        url: 'https://www.city.katsushika.lg.jp/kenkou/1000050/1001803/',
       },
       {
         title: '児童手当を申請',
@@ -230,7 +230,7 @@ const PHASES = [
         title: '赤ちゃんファースト（東京都）を申請',
         where: '専用ウェブサイト',
         deadline: '都の案内に従う',
-        url: 'https://www.akachan-first.metro.tokyo.lg.jp/',
+        url: 'https://www.fukushi.metro.tokyo.lg.jp/kodomo/shussan/tokyo_shussankosodateouen',
       },
       {
         title: '産後ケアサービスを予約（希望時）',
@@ -259,7 +259,7 @@ const PHASES = [
         amount: 100000,
         tag: 'ポイント',
         note: '東京都独自。商品カタログから選択',
-        url: 'https://www.akachan-first.metro.tokyo.lg.jp/',
+        url: 'https://www.fukushi.metro.tokyo.lg.jp/kodomo/shussan/tokyo_shussankosodateouen',
       },
       {
         name: '産後ケアサービス',
@@ -523,6 +523,21 @@ const CALENDAR_WEEKS = [
     attention: '陣痛間隔をアプリで計る。落ち着いて対処を',
     medical: '陣痛が規則的に（初産：10分間隔、経産：15分間隔）になったら入院',
   },
+];
+
+// ── 情報タブ：ニュース・YouTube ──────────────────────────
+
+const RSS2JSON = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+const NEWS_SOURCES = [
+  { label: '妊娠・出産', url: 'https://news.google.com/rss/search?q=妊娠+出産+育児&hl=ja&gl=JP&ceid=JP:ja' },
+  { label: '子育て',     url: 'https://news.google.com/rss/search?q=葛飾区+子育て+妊娠&hl=ja&gl=JP&ceid=JP:ja' },
+];
+
+const YT_CHANNELS = [
+  { name: '助産師HISAKO', id: 'UCgLt6RS5cHmL6i15sbu2kGw' },
+  { name: '助産師はるか 安産塾', id: 'UCFQ-kjcWEmRTF0rkzevxSDw' },
+  { name: 'ホッとできる！産婦人科', id: 'UCladKIzy02qqzmktiZmWOAA' },
 ];
 
 const TRIMESTER_INFO = {

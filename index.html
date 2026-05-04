@@ -41,6 +41,7 @@
       <button class="tab-btn active" id="tab-roadmap"  onclick="showTab('roadmap')">ロードマップ</button>
       <button class="tab-btn"        id="tab-calendar" onclick="showTab('calendar')">妊娠カレンダー</button>
       <button class="tab-btn"        id="tab-sim"      onclick="showTab('sim')">シミュレーター</button>
+      <button class="tab-btn"        id="tab-news"     onclick="showTab('news')">情報</button>
     </nav>
     <button class="logout-btn" onclick="logout()" title="ログアウト">🔓</button>
   </header>
@@ -74,6 +75,15 @@
         <button class="ics-btn" onclick="generateICS()">Googleカレンダーに追加 ↗</button>
       </div>
       <div id="calendar-content"></div>
+    </section>
+
+    <!-- ── News / YouTube ── -->
+    <section id="section-news">
+      <div class="news-sub-bar">
+        <button class="news-sub-btn active" id="btn-news-view"  onclick="setNewsView('news')">📰 ニュース</button>
+        <button class="news-sub-btn"        id="btn-yt-view"    onclick="setNewsView('youtube')">▶ YouTube</button>
+      </div>
+      <div id="news-content"></div>
     </section>
 
     <!-- ── Simulator ── -->

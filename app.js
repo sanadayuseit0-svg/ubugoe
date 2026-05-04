@@ -789,6 +789,125 @@ function calcCashflow() {
     </div>`).join('');
 }
 
+// ── 情報タブ（ニュース・YouTube） ────────────────────────
+
+let newsView = 'news';
+let newsCache = {};
+
+function setNewsView(view) {
+  newsView = view;
+  document.getElementById('btn-news-view').classList.toggle('active', view === 'news');
+  document.getElementById('btn-yt-view').classList.toggle('active', view === 'youtube');
+  renderNewsContent();
+}
+
+function renderNewsContent() {
+  const el = document.getElementById('news-content');
+  if (!el) return;
+  if (newsView === 'news') fetchNews(el);
+  else fetchYouTubeVideos(el);
+}
+
+async function fetchNews(el) {
+  el.innerHTML = '<div class="news-loading">読み込み中…</div>';
+  const results = [];
+  for (const src of NEWS_SOURCES) {
+    if (newsCache[src.url] && Date.now() - newsCache[src.url].ts < 300000) {
+      results.push({ label: src.label, items: newsCache[src.url].items });
+      continue;
+    }
+    try {
+      const url = RSS2JSON + encodeURIComponent(src.url) + '&count=8';
+      const res = await fetch(url);
+      const json = await res.json();
+      const items = (json.items || []).slice(0, 8).map(item => ({
+        title: item.title,
+        link:  item.link,
+        pubDate: item.pubDate ? item.pubDate.slice(0, 10) : '',
+        source: item.author || '',
+      }));
+      newsCache[src.url] = { items, ts: Date.now() };
+      results.push({ label: src.label, items });
+    } catch {
+      results.push({ label: src.label, items: [] });
+    }
+  }
+
+  if (results.every(r => r.items.length === 0)) {
+    el.innerHTML = '<div class="news-empty">ニュースを取得できませんでした。しばらくしてから再試行してください。</div>';
+    return;
+  }
+
+  el.innerHTML = results.map(r => `
+    <div class="news-section">
+      <div class="news-section-label">${r.label}</div>
+      <div class="news-cards">
+        ${r.items.length === 0
+          ? '<div class="news-empty">記事を取得できませんでした</div>'
+          : r.items.map(item => `
+            <a class="news-card" href="${item.link}" target="_blank" rel="noopener noreferrer">
+              <div class="news-card-title">${item.title}</div>
+              <div class="news-card-meta">
+                ${item.source ? `<span>${item.source}</span>` : ''}
+                ${item.pubDate ? `<span>${item.pubDate}</span>` : ''}
+              </div>
+            </a>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+async function fetchYouTubeVideos(el) {
+  el.innerHTML = '<div class="news-loading">読み込み中…</div>';
+  const results = [];
+  for (const ch of YT_CHANNELS) {
+    const cacheKey = 'yt_' + ch.id;
+    if (newsCache[cacheKey] && Date.now() - newsCache[cacheKey].ts < 300000) {
+      results.push({ name: ch.name, id: ch.id, videos: newsCache[cacheKey].videos });
+      continue;
+    }
+    try {
+      const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${ch.id}`;
+      const url = RSS2JSON + encodeURIComponent(feedUrl) + '&count=4';
+      const res  = await fetch(url);
+      const json = await res.json();
+      const videos = (json.items || []).slice(0, 4).map(item => {
+        const vidId = item.link ? item.link.split('v=')[1] : '';
+        return {
+          title:     item.title,
+          link:      item.link,
+          pubDate:   item.pubDate ? item.pubDate.slice(0, 10) : '',
+          thumbnail: vidId ? `https://img.youtube.com/vi/${vidId}/mqdefault.jpg` : '',
+          vidId,
+        };
+      });
+      newsCache[cacheKey] = { videos, ts: Date.now() };
+      results.push({ name: ch.name, id: ch.id, videos });
+    } catch {
+      results.push({ name: ch.name, id: ch.id, videos: [] });
+    }
+  }
+
+  el.innerHTML = results.map(ch => `
+    <div class="news-section">
+      <div class="news-section-label">
+        ${ch.name}
+        <a class="yt-channel-link" href="https://www.youtube.com/channel/${ch.id}" target="_blank" rel="noopener">チャンネルを見る ↗</a>
+      </div>
+      <div class="yt-cards">
+        ${ch.videos.length === 0
+          ? '<div class="news-empty">動画を取得できませんでした</div>'
+          : ch.videos.map(v => `
+            <a class="yt-card" href="${v.link}" target="_blank" rel="noopener noreferrer">
+              ${v.thumbnail ? `<img class="yt-thumb" src="${v.thumbnail}" alt="" loading="lazy">` : '<div class="yt-thumb-placeholder">▶</div>'}
+              <div class="yt-card-info">
+                <div class="yt-card-title">${v.title}</div>
+                ${v.pubDate ? `<div class="yt-card-date">${v.pubDate}</div>` : ''}
+              </div>
+            </a>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
 // ── タブ切り替え ──────────────────────────────────────────
 
 function showTab(name) {
@@ -798,6 +917,7 @@ function showTab(name) {
   document.getElementById(`tab-${name}`).classList.add('active');
   if (name === 'sim')      calcSimulator();
   if (name === 'calendar') renderCalendarContent();
+  if (name === 'news')     renderNewsContent();
 }
 
 // ── 初期化 ────────────────────────────────────────────────
