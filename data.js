@@ -527,11 +527,15 @@ const CALENDAR_WEEKS = [
 
 // ── 情報タブ：ニュース・YouTube ──────────────────────────
 
-const RSS2JSON = 'https://api.rss2json.com/v1/api.json?rss_url=';
+// CORS プロキシを順に試す（一方がブロックされても代替で動く）
+const CORS_PROXIES = [
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+];
 
 const NEWS_SOURCES = [
-  { label: '妊娠・出産', url: 'https://news.google.com/rss/search?q=妊娠+出産+育児&hl=ja&gl=JP&ceid=JP:ja' },
-  { label: '子育て',     url: 'https://news.google.com/rss/search?q=葛飾区+子育て+妊娠&hl=ja&gl=JP&ceid=JP:ja' },
+  { label: '妊娠・出産ニュース', url: 'https://news.google.com/rss/search?q=%E5%A6%8A%E5%A8%A0+%E5%87%BA%E7%94%A3+%E8%82%B2%E5%85%90&hl=ja&gl=JP&ceid=JP:ja' },
+  { label: '子育て・育児ニュース', url: 'https://news.google.com/rss/search?q=%E5%AD%90%E8%82%B2%E3%81%A6+%E8%B5%A4%E3%81%A1%E3%82%83%E3%82%93+%E8%82%B2%E5%85%90&hl=ja&gl=JP&ceid=JP:ja' },
 ];
 
 const YT_CHANNELS = [
