@@ -102,35 +102,6 @@ function getWardCashTotal(phaseId) {
   return benefits.reduce((s, b) => s + (b.amount || 0), 0);
 }
 
-// ── 認証 ─────────────────────────────────────────────────
-
-function checkAuth() {
-  return localStorage.getItem('ubugoe_auth') === APP_PASSWORD;
-}
-
-function submitAuth() {
-  const input = document.getElementById('auth-input').value;
-  if (input === APP_PASSWORD) {
-    localStorage.setItem('ubugoe_auth', APP_PASSWORD);
-    document.getElementById('auth-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    initApp();
-  } else {
-    const err = document.getElementById('auth-error');
-    err.textContent = 'パスワードが違います';
-    document.getElementById('auth-input').value = '';
-    document.getElementById('auth-input').focus();
-    setTimeout(() => { err.textContent = ''; }, 2500);
-  }
-}
-
-function logout() {
-  localStorage.removeItem('ubugoe_auth');
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('auth-screen').style.display = 'flex';
-  document.getElementById('auth-input').value = '';
-}
-
 // ── 日付ユーティリティ ───────────────────────────────────
 
 function addDays(date, days) {
@@ -899,9 +870,5 @@ function initApp() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (checkAuth()) {
-    document.getElementById('auth-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    initApp();
-  }
+  initApp();
 });

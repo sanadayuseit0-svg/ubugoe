@@ -8,5 +8,12 @@ const FIREBASE_CONFIG = {
 };
 
 firebase.initializeApp(FIREBASE_CONFIG);
-const db         = firebase.firestore();
-const FAMILY_DOC = db.collection('families').doc('default');
+const db = firebase.firestore();
+
+// デバイスごとに固有IDを生成・保持（家族間共有はこのIDを共有することで実現）
+let _deviceId = localStorage.getItem('ubugoe_device_id');
+if (!_deviceId) {
+  _deviceId = 'device-' + Math.random().toString(36).slice(2, 11);
+  localStorage.setItem('ubugoe_device_id', _deviceId);
+}
+const FAMILY_DOC = db.collection('families').doc(_deviceId);

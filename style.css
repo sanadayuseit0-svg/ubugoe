@@ -533,60 +533,6 @@ section.active { display: block; }
   border-radius: 10px; background: #fffbeb; border: 1px solid #fde68a;
 }
 
-/* ── 認証画面 ── */
-#auth-screen {
-  position: fixed; inset: 0; z-index: 999;
-  background: linear-gradient(135deg, #fef0f7 0%, #f0ebff 50%, #fef9f0 100%);
-  display: flex; align-items: center; justify-content: center;
-}
-
-.auth-card {
-  background: white; border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(180,80,140,0.15);
-  padding: 48px 40px; text-align: center;
-  width: 100%; max-width: 360px;
-  border: 1px solid var(--border);
-}
-
-.auth-logo { font-size: 52px; margin-bottom: 12px; }
-.auth-title {
-  font-size: 28px; font-weight: 800;
-  background: linear-gradient(135deg, #e879a0, #a78bfa);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.auth-sub { font-size: 13px; color: var(--muted); margin-top: 4px; margin-bottom: 32px; }
-
-.auth-form { display: flex; flex-direction: column; gap: 12px; }
-
-.auth-input {
-  width: 100%; padding: 14px 18px; font-size: 16px; font-family: inherit;
-  border: 2px solid #f0d9eb; border-radius: 14px; background: #fdf6ff;
-  color: var(--text); outline: none; text-align: center;
-  letter-spacing: 0.1em; transition: border-color 0.15s;
-}
-.auth-input:focus { border-color: #e879a0; }
-
-.auth-error {
-  font-size: 13px; color: #e11d48; min-height: 20px;
-  font-weight: 600;
-}
-
-.auth-btn {
-  width: 100%; padding: 14px; font-size: 15px; font-weight: 800;
-  border: none; border-radius: 14px; cursor: pointer;
-  background: linear-gradient(135deg, #e879a0, #a78bfa);
-  color: white; letter-spacing: 0.05em; transition: opacity 0.15s;
-}
-.auth-btn:hover { opacity: 0.9; }
-
-/* ログアウトボタン */
-.logout-btn {
-  margin-left: 8px; background: none; border: none; cursor: pointer;
-  font-size: 18px; opacity: 0.5; transition: opacity 0.15s; padding: 4px;
-}
-.logout-btn:hover { opacity: 1; }
-
 /* ── 予定日設定パネル ── */
 .due-date-panel {
   background: white; border-radius: var(--radius);
@@ -801,8 +747,6 @@ section.active { display: block; }
   }
   .header-title { font-size: 16px; }
   .header-sub   { display: none; }
-  .logout-btn   { font-size: 16px; margin-left: 4px; }
-
   /* タブバーを画面下部に固定 */
   .tab-bar {
     position: fixed;
@@ -930,12 +874,4 @@ section.active { display: block; }
   .cal-day-detail { padding: 14px; }
   .day-detail-date { font-size: 14px; }
 
-  /* 認証カード */
-  .auth-card {
-    padding: 36px 22px;
-    margin: 16px;
-    border-radius: 20px;
-  }
-  .auth-logo  { font-size: 44px; }
-  .auth-title { font-size: 24px; }
 }
