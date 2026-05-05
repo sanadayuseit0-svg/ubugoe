@@ -533,6 +533,54 @@ section.active { display: block; }
   border-radius: 10px; background: #fffbeb; border: 1px solid #fde68a;
 }
 
+/* ── アフィリエイト準備リスト ── */
+.affiliate-list {
+  display: flex; flex-direction: column; gap: 8px; margin-top: 6px;
+}
+
+.affiliate-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px;
+  background: #fdf8ff; border: 1px solid #ece4f5; border-radius: 12px;
+  text-decoration: none; color: var(--text);
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+.affiliate-item:hover {
+  background: #f3ecff; border-color: #a78bfa; transform: translateX(2px);
+}
+
+.affiliate-emoji { font-size: 22px; flex-shrink: 0; }
+
+.affiliate-info { flex: 1; min-width: 0; }
+.affiliate-name { font-size: 13px; font-weight: 700; }
+.affiliate-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.affiliate-arrow {
+  font-size: 11px; font-weight: 700; color: #a78bfa;
+  white-space: nowrap; flex-shrink: 0;
+}
+
+.affiliate-disclosure {
+  font-size: 10px; color: var(--muted); text-align: right; margin-top: 4px;
+}
+
+/* シミュレーター 保険リンク */
+.sim-insurance {
+  margin-top: 16px; padding: 14px 16px;
+  background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px;
+}
+.sim-insurance-heading {
+  font-size: 13px; font-weight: 700; color: #78350f; margin-bottom: 10px;
+}
+.sim-insurance-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; background: white;
+  border: 1px solid #fcd34d; border-radius: 8px;
+  font-size: 13px; font-weight: 700; color: #b45309;
+  text-decoration: none; transition: background 0.15s;
+}
+.sim-insurance-link:hover { background: #fef9c3; }
+
 /* ── 予定日設定パネル ── */
 .due-date-panel {
   background: white; border-radius: var(--radius);

@@ -333,6 +333,23 @@ function renderTodoItem(todo, phaseId, idx) {
   `;
 }
 
+function renderAffiliateProducts(products) {
+  if (!products || products.length === 0) return '';
+  return `
+    <div class="affiliate-list">
+      ${products.map(p => `
+        <a class="affiliate-item" href="${p.url}" target="_blank" rel="noopener sponsored">
+          <span class="affiliate-emoji">${p.emoji}</span>
+          <div class="affiliate-info">
+            <div class="affiliate-name">${p.name}</div>
+            <div class="affiliate-note">${p.note}</div>
+          </div>
+          <span class="affiliate-arrow">Amazon →</span>
+        </a>`).join('')}
+      <div class="affiliate-disclosure">※ Amazonアソシエイトリンクを含みます</div>
+    </div>`;
+}
+
 function renderBenefitItem(benefit) {
   const amountStr = benefit.amount != null ? formatYen(benefit.amount) : '要確認';
   const amountClass = benefit.amount != null ? '' : 'unknown';
@@ -372,6 +389,8 @@ function renderPhaseCard(phase) {
   const benefitsHtml = benefits.length > 0
     ? `<div class="benefit-list">${benefits.map(renderBenefitItem).join('')}</div>`
     : `<p class="empty-state">このフェーズでの給付はありません</p>`;
+  const affiliateProds = AFFILIATE_PRODUCTS.phase[phase.id] || [];
+  const affiliateHtml  = renderAffiliateProducts(affiliateProds);
   return `
     <div class="phase-card">
       <div class="phase-card-header">
@@ -392,6 +411,11 @@ function renderPhaseCard(phase) {
           <div class="section-heading">💰 もらえるお金・サービス</div>
           ${benefitsHtml}
         </div>
+        ${affiliateHtml ? `
+        <div class="card-section">
+          <div class="section-heading">🛍 準備リスト</div>
+          ${affiliateHtml}
+        </div>` : ''}
       </div>
     </div>
   `;
@@ -626,6 +650,9 @@ function renderWeekCard(w, triInfo) {
     dateBadge = `<span class="week-actual-date">${formatDateJP(d)}頃</span>`;
   }
 
+  const weekProds   = AFFILIATE_PRODUCTS.week[w.week] || [];
+  const weekAffHtml = renderAffiliateProducts(weekProds);
+
   const eventsHtml = events.map(e => `
     <div class="custom-event">
       <span class="event-icon">📌</span>
@@ -679,6 +706,11 @@ function renderWeekCard(w, triInfo) {
           <div class="week-detail-text">${w.medical}</div>
         </div>
         ${eventsSection}
+        ${weekAffHtml ? `
+        <div class="week-detail-item">
+          <div class="week-detail-label">🛍 今週の準備リスト</div>
+          ${weekAffHtml}
+        </div>` : ''}
       </div>` : ''}
     </div>
   `;
@@ -785,6 +817,11 @@ function calcSimulator() {
     ${fixed.map(r => `<div class="result-row"><span class="result-row-name">${r.name}</span><span class="result-row-amount">${formatYen(r.amount)}</span></div>`).join('')}
     <div class="result-section-label">雇用形態別の給付</div>
     ${variable.map(r => `<div class="result-row"><span class="result-row-name">${r.name}</span><span class="result-row-amount ${r.amount==null?'variable':''}">${r.amount!=null?formatYen(r.amount):'対象外'}</span></div>`).join('')}
+    <div class="sim-insurance">
+      <div class="sim-insurance-heading">💡 分娩費の自己負担に備えて、マタニティ保険を検討しませんか？</div>
+      <a class="sim-insurance-link" href="https://hoken.kakaku.com/ins/seimei/" target="_blank" rel="noopener sponsored">保険を無料で比較する →</a>
+      <div class="affiliate-disclosure">※ 広告リンクを含みます</div>
+    </div>
   `;
   calcCashflow();
 }
