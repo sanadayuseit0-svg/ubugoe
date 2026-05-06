@@ -338,15 +338,18 @@ function renderAffiliateProducts(products) {
   return `
     <div class="affiliate-list">
       ${products.map(p => `
-        <a class="affiliate-item" href="${p.url}" target="_blank" rel="noopener sponsored">
+        <div class="affiliate-item">
           <span class="affiliate-emoji">${p.emoji}</span>
           <div class="affiliate-info">
             <div class="affiliate-name">${p.name}</div>
             <div class="affiliate-note">${p.note}</div>
           </div>
-          <span class="affiliate-arrow">Amazon →</span>
-        </a>`).join('')}
-      <div class="affiliate-disclosure">※ Amazonアソシエイトリンクを含みます</div>
+          <div class="affiliate-links">
+            <a class="affiliate-link amz"  href="${p.amzUrl}"  target="_blank" rel="noopener sponsored">Amazon</a>
+            <a class="affiliate-link rktn" href="${p.rktnUrl}" target="_blank" rel="noopener sponsored">楽天</a>
+          </div>
+        </div>`).join('')}
+      <div class="affiliate-disclosure">※ Amazon・楽天アフィリエイトリンクを含みます</div>
     </div>`;
 }
 

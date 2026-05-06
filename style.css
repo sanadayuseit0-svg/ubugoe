@@ -542,11 +542,7 @@ section.active { display: block; }
   display: flex; align-items: center; gap: 12px;
   padding: 11px 14px;
   background: #fdf8ff; border: 1px solid #ece4f5; border-radius: 12px;
-  text-decoration: none; color: var(--text);
-  transition: background 0.15s, border-color 0.15s, transform 0.15s;
-}
-.affiliate-item:hover {
-  background: #f3ecff; border-color: #a78bfa; transform: translateX(2px);
+  color: var(--text);
 }
 
 .affiliate-emoji { font-size: 22px; flex-shrink: 0; }
@@ -555,10 +551,18 @@ section.active { display: block; }
 .affiliate-name { font-size: 13px; font-weight: 700; }
 .affiliate-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-.affiliate-arrow {
-  font-size: 11px; font-weight: 700; color: #a78bfa;
-  white-space: nowrap; flex-shrink: 0;
+.affiliate-links { display: flex; gap: 6px; flex-shrink: 0; }
+
+.affiliate-link {
+  display: inline-flex; align-items: center;
+  padding: 5px 10px; border-radius: 8px;
+  font-size: 11px; font-weight: 700;
+  text-decoration: none; white-space: nowrap;
+  transition: opacity 0.15s;
 }
+.affiliate-link:hover { opacity: 0.8; }
+.affiliate-link.amz  { background: #ff9900; color: white; }
+.affiliate-link.rktn { background: #bf0000; color: white; }
 
 .affiliate-disclosure {
   font-size: 10px; color: var(--muted); text-align: right; margin-top: 4px;
