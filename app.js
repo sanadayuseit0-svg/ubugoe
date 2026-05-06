@@ -387,7 +387,8 @@ function renderPhaseCard(phase) {
     ? `<ul class="todo-list">${todos.map((t,i) => renderTodoItem(t, phase.id, i)).join('')}</ul>`
     : `<p class="empty-state">このフェーズの手続きはありません</p>`;
   const benefitsHtml = benefits.length > 0
-    ? `<div class="benefit-list">${benefits.map(renderBenefitItem).join('')}</div>`
+    ? `<div class="benefit-list">${benefits.map(renderBenefitItem).join('')}</div>
+       <div class="benefit-disclaimer">※ 金額は目安です。制度は年度ごとに変わる場合があります。最新情報・申請条件は各自治体の公式サイトをご確認ください。</div>`
     : `<p class="empty-state">このフェーズでの給付はありません</p>`;
   const affiliateProds = AFFILIATE_PRODUCTS.phase[phase.id] || [];
   const affiliateHtml  = renderAffiliateProducts(affiliateProds);
